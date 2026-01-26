@@ -1314,20 +1314,29 @@ useEffect(() => {
                   fill={rect.fillColor}
                   draggable={isDraggable}
                   onClick={(e) => onClick(e, rect.id, 'rectangle')}
+                 // In the rectangles.map() section, replace the onTransformEnd:
                   onTransformEnd={(e) => {
                     const node = e.target;
+                    const scaleX = node.scaleX();
+                    const scaleY = node.scaleY();
+                    
+                    // Reset scale back to 1 and apply it to width/height
+                    node.scaleX(1);
+                    node.scaleY(1);
+                    
                     setRectangles(prev => prev.map(r => 
                       r.id === rect.id ? {
                         ...r,
                         x: node.x(),
                         y: node.y(),
-                        width: node.width() * node.scaleX(),
-                        height: node.height() * node.scaleY(),
+                        width: Math.max(5, node.width() * scaleX), // Minimum width of 5
+                        height: Math.max(5, node.height() * scaleY), // Minimum height of 5
                         rotation: node.rotation()
                       } : r
                     ));
                     setTimeout(saveToHistory, 0);
                   }}
+
                 />
               ))}
 
@@ -1342,14 +1351,30 @@ useEffect(() => {
                   onClick={(e) => onClick(e, circle.id, 'circle')}
                   onTransformEnd={(e) => {
                     const node = e.target;
-                    setCircles(prev => prev.map(c => 
-                      c.id === circle.id ? {
-                        ...c,
-                        x: node.x(),
-                        y: node.y(),
-                        radius: node.radius() * node.scaleX()
-                      } : c
-                    ));
+
+                    // actual rendered size
+                    const width = node.width() * node.scaleX();
+                    const height = node.height() * node.scaleY();
+
+                    const diameter = Math.max(width, height);
+                    const radius = Math.max(5, diameter / 2);
+
+                    node.scaleX(1);
+                    node.scaleY(1);
+
+                    setCircles(prev =>
+                      prev.map(c =>
+                        c.id === circle.id
+                          ? {
+                              ...c,
+                              x: node.x(),
+                              y: node.y(),
+                              radius
+                            }
+                          : c
+                      )
+                    );
+
                     setTimeout(saveToHistory, 0);
                   }}
                 />
@@ -1364,18 +1389,31 @@ useEffect(() => {
                   fill={triangle.fillColor}
                   draggable={isDraggable}
                   onClick={(e) => onClick(e, triangle.id, 'triangle')}
-                  onTransformEnd={(e) => {
-                    const node = e.target;
-                    setTriangles(prev => prev.map(t => 
-                      t.id === triangle.id ? {
-                        ...t,
-                        x: node.x(),
-                        y: node.y(),
-                        radius: node.radius() * node.scaleX()
-                      } : t
-                    ));
-                    setTimeout(saveToHistory, 0);
-                  }}
+                 onTransformEnd={(e) => {
+                  const node = e.target;
+
+                  const width = node.width() * node.scaleX();
+                  const height = node.height() * node.scaleY();
+                  const size = Math.max(width, height);
+
+                  node.scaleX(1);
+                  node.scaleY(1);
+
+                  setTriangles(prev =>
+                    prev.map(t =>
+                      t.id === triangle.id
+                        ? {
+                            ...t,
+                            x: node.x(),
+                            y: node.y(),
+                            radius: Math.max(5, size / 2)
+                          }
+                        : t
+                    )
+                  );
+
+                  setTimeout(saveToHistory, 0);
+                }}
                 />
               ))}
 
@@ -1389,18 +1427,35 @@ useEffect(() => {
                   draggable={isDraggable}
                   onClick={(e) => onClick(e, star.id, 'star')}
                   onTransformEnd={(e) => {
-                    const node = e.target;
-                    setStars(prev => prev.map(s => 
-                      s.id === star.id ? {
-                        ...s,
-                        x: node.x(),
-                        y: node.y(),
-                        innerRadius: node.innerRadius() * node.scaleX(),
-                        outerRadius: node.outerRadius() * node.scaleX()
-                      } : s
-                    ));
-                    setTimeout(saveToHistory, 0);
-                  }}
+                  const node = e.target;
+
+                  const width = node.width() * node.scaleX();
+                  const height = node.height() * node.scaleY();
+                  const size = Math.max(width, height);
+
+                  const outerRadius = Math.max(5, size / 2);
+                  const ratio = node.innerRadius() / node.outerRadius();
+                  const innerRadius = outerRadius * ratio;
+
+                  node.scaleX(1);
+                  node.scaleY(1);
+
+                  setStars(prev =>
+                    prev.map(s =>
+                      s.id === star.id
+                        ? {
+                            ...s,
+                            x: node.x(),
+                            y: node.y(),
+                            outerRadius,
+                            innerRadius
+                          }
+                        : s
+                    )
+                  );
+
+                  setTimeout(saveToHistory, 0);
+                }}
                 />
               ))}
 
@@ -1413,16 +1468,29 @@ useEffect(() => {
                   fill={hexagon.fillColor}
                   draggable={isDraggable}
                   onClick={(e) => onClick(e, hexagon.id, 'hexagon')}
-                  onTransformEnd={(e) => {
+                   onTransformEnd={(e) => {
                     const node = e.target;
-                    setHexagons(prev => prev.map(h => 
-                      h.id === hexagon.id ? {
-                        ...h,
-                        x: node.x(),
-                        y: node.y(),
-                        radius: node.radius() * node.scaleX()
-                      } : h
-                    ));
+
+                    const width = node.width() * node.scaleX();
+                    const height = node.height() * node.scaleY();
+                    const size = Math.max(width, height);
+
+                    node.scaleX(1);
+                    node.scaleY(1);
+
+                    setHexagons(prev =>
+                      prev.map(h =>
+                        h.id === hexagon.id
+                          ? {
+                              ...h,
+                              x: node.x(),
+                              y: node.y(),
+                              radius: Math.max(5, size / 2)
+                            }
+                          : h
+                      )
+                    );
+
                     setTimeout(saveToHistory, 0);
                   }}
                 />
