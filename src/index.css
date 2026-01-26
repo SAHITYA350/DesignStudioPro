@@ -1,0 +1,284 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+/* Custom styles */
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+
+  body {
+    @apply antialiased;
+  }
+}
+
+@layer components {
+  .canvas-bg {
+    @apply bg-white dark:bg-gray-800;
+  }
+  
+  .tool-button {
+    @apply transition-all duration-200 hover:scale-105 active:scale-95;
+  }
+}
+
+/* DaisyUI theme configuration */
+[data-theme="light"] {
+  --color-primary: #3b82f6;
+  --color-secondary: #10b981;
+  --color-accent: #f59e0b;
+  --color-neutral: #6b7280;
+  --color-base-100: #ffffff;
+  --color-base-200: #f3f4f6;
+  --color-base-300: #e5e7eb;
+}
+
+[data-theme="dark"] {
+  --color-primary: #60a5fa;
+  --color-secondary: #34d399;
+  --color-accent: #fbbf24;
+  --color-neutral: #9ca3af;
+  --color-base-100: #1f2937;
+  --color-base-200: #111827;
+  --color-base-300: #374151;
+}
+
+/* Prevent horizontal overflow on sidebar */
+.overflow-x-hidden {
+  overflow-x: hidden !important;
+}
+
+/* Scrollbar Styling - Vertical only */
+.scrollbar-thin {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--bc) / 0.2) transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 0; /* Remove horizontal scrollbar */
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: hsl(var(--bc) / 0.2);
+  border-radius: 10px;
+  transition: background 0.2s ease;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--bc) / 0.3);
+}
+
+/* Tooltip positioning - show on right side */
+.tooltip {
+  --tooltip-offset: 0.75rem;
+}
+
+.tooltip.tooltip-right:before,
+.tooltip.tooltip-right:after {
+  left: 100%;
+  right: auto;
+  transform: translateX(var(--tooltip-offset));
+}
+
+/* Ensure tooltips don't cause overflow */
+.tooltip:before {
+  white-space: nowrap;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 9999;
+}
+
+/* Mobile - hide tooltips to prevent overflow */
+@media (max-width: 768px) {
+  .tooltip:before,
+  .tooltip:after {
+    display: none !important;
+  }
+}
+
+/* Smooth transitions for buttons */
+.btn {
+  @apply transition-all duration-200;
+}
+
+.btn:active {
+  @apply scale-95;
+}
+
+/* Ensure all content stays within sidebar width */
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+
+/* Professional hover effects */
+.btn-ghost:hover {
+  @apply bg-base-300;
+}
+
+.btn-primary:hover {
+  @apply brightness-110;
+}
+
+/* Smooth color transitions */
+* {
+  transition-property: color, background-color, border-color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Focus states for accessibility */
+.btn:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-2;
+}
+
+/* Loading state animation */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.skeleton {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(
+    to right,
+    hsl(var(--b2)) 0%,
+    hsl(var(--b3)) 20%,
+    hsl(var(--b2)) 40%,
+    hsl(var(--b2)) 100%
+  );
+  background-size: 1000px 100%;
+}
+
+/* Custom scrollbar for modals and dropdowns */
+.modal-box::-webkit-scrollbar,
+.dropdown-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-box::-webkit-scrollbar-track,
+.dropdown-content::-webkit-scrollbar-track {
+  background: hsl(var(--b2));
+  border-radius: 10px;
+}
+
+.modal-box::-webkit-scrollbar-thumb,
+.dropdown-content::-webkit-scrollbar-thumb {
+  background: hsl(var(--bc) / 0.3);
+  border-radius: 10px;
+}
+
+.modal-box::-webkit-scrollbar-thumb:hover,
+.dropdown-content::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--bc) / 0.5);
+}
+
+/* Improved card hover effects */
+.card {
+  @apply transition-all duration-300;
+}
+
+.card:hover {
+  @apply shadow-xl transform -translate-y-1;
+}
+
+/* Glass morphism effect for modern UI */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive text sizing */
+@media (max-width: 640px) {
+  .text-responsive {
+    @apply text-sm;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .text-responsive {
+    @apply text-base;
+  }
+}
+
+@media (min-width: 1025px) {
+  .text-responsive {
+    @apply text-lg;
+  }
+}
+
+/* Tooltip positioning - show on right side */
+.tooltip {
+  --tooltip-offset: 1rem;
+  position: relative;
+}
+
+.tooltip.tooltip-right:before {
+  left: calc(100% + var(--tooltip-offset));
+  right: auto;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: hsl(var(--b1));
+  color: hsl(var(--bc));
+  border: 1px solid hsl(var(--b3));
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.tooltip.tooltip-right:hover:before {
+  opacity: 1;
+}
+
+.tooltip.tooltip-right:after {
+  left: calc(100% + var(--tooltip-offset) - 6px);
+  border-left: 0;
+  border-right-color: hsl(var(--b1));
+  transform: translateY(-50%);
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.tooltip.tooltip-right:hover:after {
+  opacity: 1;
+}
+
+/* Show tooltips on desktop only */
+@media (min-width: 769px) {
+  .tooltip:before,
+  .tooltip:after {
+    display: block;
+  }
+}
+
+/* Mobile - hide tooltips to prevent overflow */
+@media (max-width: 768px) {
+  .tooltip:before,
+  .tooltip:after {
+    display: none !important;
+  }
+}
