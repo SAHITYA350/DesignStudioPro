@@ -96,7 +96,15 @@ export default function App() {
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const themeDropdownRef = useRef(null);
-  const [isLoading, setIsLoading] = useState(true);
+ const [isLoading, setIsLoading] = useState(true);
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    setIsLoading(false);
+  }, 1800);
+
+  return () => clearTimeout(timer);
+}, []);
 
 
   // Handle theme changes
@@ -815,10 +823,10 @@ useEffect(() => {
   const selectedComment = comments.find(c => c.id === selectedId);
   const selectedImage = images.find(i => i.id === selectedId);
 
-  if (isLoading) {
+   if (isLoading) {
   return (
     <div className="flex items-center justify-center h-screen w-screen bg-base-100">
-      <EnhancedLoader onFinish={() => setIsLoading(false)} />
+      <EnhancedLoader />
     </div>
   );
 }
