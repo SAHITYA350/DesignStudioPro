@@ -114,8 +114,9 @@ useEffect(() => {
 
   // Initialize colors based on theme on first render
   useEffect(() => {
-  const initialFillColor = "#3b82f6"; // Always white initially
-  const initialStrokeColor = "#ffffff"; // Always white initially
+  const initialFillColor = "#3b82f6"; 
+   const initialStrokeColor = "#ffffff"; // Always white initially
+
   
   setFillColor(initialFillColor);
   setStrokeColor(initialStrokeColor);
@@ -1649,7 +1650,7 @@ useEffect(() => {
             ))}
 
              {images.map((img) => {
-  // Check if image is loaded
+
   if (!img.image) {
     return null;
   }
